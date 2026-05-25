@@ -1,0 +1,80 @@
+<% if (theme.comments && theme.comments.enable) { %>
+<section class="comments-section" id="comments">
+  <h3 class="comments-title">评论</h3>
+
+  <% var provider = theme.comments.provider; %>
+
+  <!-- Giscus -->
+  <% if (provider === 'giscus') { %>
+    <% var g = theme.comments.giscus; %>
+    <script src="https://giscus.app/client.js"
+      data-repo="<%= g.repo %>"
+      data-repo-id="<%= g.repo_id %>"
+      data-category="<%= g.category %>"
+      data-category-id="<%= g.category_id %>"
+      data-mapping="<%= g.mapping || 'pathname' %>"
+      data-strict="0"
+      data-reactions-enabled="<%= g.reactions_enabled !== undefined ? g.reactions_enabled : 1 %>"
+      data-emit-metadata="<%= g.emit_metadata || 0 %>"
+      data-input-position="bottom"
+      data-theme="<%= g.theme || 'preferred_color_scheme' %>"
+      data-lang="<%= g.lang || 'zh-CN' %>"
+      crossorigin="anonymous"
+      async>
+    </script>
+  <% } %>
+
+  <!-- Waline -->
+  <% if (provider === 'waline') { %>
+    <% var w = theme.comments.waline; %>
+    <div id="waline-comment"></div>
+    <link rel="stylesheet" href="https://unpkg.com/@waline/client@v3/dist/waline.css">
+    <script type="module">
+      import { init } from 'https://unpkg.com/@waline/client@v3/dist/waline.js';
+      init({
+        el: '#waline-comment',
+        serverURL: '<%= w.server_url %>',
+        lang: '<%= w.lang || "zh-CN" %>',
+        comment: <%= w.comment_count !== false %>,
+        pageview: <%= w.page_view || false %>,
+      });
+    </script>
+  <% } %>
+
+  <!-- Disqus -->
+  <% if (provider === 'disqus') { %>
+    <div id="disqus_thread"></div>
+    <script>
+      var disqus_config = function() {
+        this.page.url = '<%= page.permalink %>';
+        this.page.identifier = '<%= page.path %>';
+      };
+      (function() {
+        var d = document, s = d.createElement('script');
+        s.src = 'https://<%= theme.comments.disqus.shortname %>.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+      })();
+    </script>
+  <% } %>
+
+  <!-- Valine -->
+  <% if (provider === 'valine') { %>
+    <% var v = theme.comments.valine; %>
+    <div id="valine-comment"></div>
+    <script src="https://unpkg.com/valine/dist/Valine.min.js"></script>
+    <script>
+      new Valine({
+        el: '#valine-comment',
+        appId: '<%= v.app_id %>',
+        appKey: '<%= v.app_key %>',
+        placeholder: '<%= v.placeholder || "说点什么吧…" %>',
+        avatar: '<%= v.avatar || "mm" %>',
+        lang: '<%= v.lang || "zh-CN" %>',
+        path: '<%= page.path %>',
+      });
+    </script>
+  <% } %>
+
+</section>
+<% } %>

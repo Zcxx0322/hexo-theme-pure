@@ -1,0 +1,12 @@
+<div class="tag-page">
+  <h1 class="page-heading">
+    标签：<span class="tag-name">#<%= page.tag %></span>
+    <span class="page-heading-count"><%= page.posts.length %> 篇</span>
+  </h1>
+  <div class="post-list">
+    <% page.posts.each(function(post) { %>
+      <%- partial('_partial/post-card', {post: post}) %>
+    <% }); %>
+  </div>
+  <%- partial('_partial/pagination') %>
+</div>

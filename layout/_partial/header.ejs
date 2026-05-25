@@ -1,0 +1,55 @@
+<header class="site-header" id="siteHeader">
+  <div class="container header-inner">
+
+    <a href="<%- url_for('/') %>" class="brand-link">
+      <% if (theme.logo) { %>
+        <img src="<%- url_for(theme.logo) %>" alt="<%= config.title %>" class="brand-logo">
+      <% } else { %>
+        <span class="brand-title"><%= config.title %></span>
+      <% } %>
+    </a>
+
+    <nav class="site-nav" id="siteNav" aria-label="主导航">
+      <ul class="nav-list">
+        <% for (var name in theme.menu) { %>
+          <% var href = url_for(theme.menu[name]); %>
+          <li class="nav-item">
+            <a href="<%= href %>" class="nav-link<%= page.path && ('/' + page.path).startsWith(theme.menu[name]) && theme.menu[name] !== '/' ? ' active' : (theme.menu[name] === '/' && (page.path === '' || page.path === 'index.html') ? ' active' : '') %>">
+              <%= name %>
+            </a>
+          </li>
+        <% } %>
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <% if (theme.search && theme.search.enable) { %>
+        <button class="icon-btn" id="searchBtn" aria-label="搜索" title="搜索">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+        </button>
+      <% } %>
+
+      <% if (theme.dark_mode && theme.dark_mode.enable) { %>
+        <button class="icon-btn theme-toggle" id="themeToggle" aria-label="切换主题" title="切换主题">
+          <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+          <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      <% } %>
+
+      <button class="icon-btn hamburger" id="menuToggle" aria-label="菜单" aria-expanded="false" aria-controls="siteNav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+  </div>
+</header>

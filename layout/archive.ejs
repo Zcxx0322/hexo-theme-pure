@@ -1,0 +1,36 @@
+<div class="archive-page">
+  <h1 class="page-heading">归档
+    <span class="page-heading-count"><%= site.posts.length %> 篇</span>
+  </h1>
+
+  <%
+    var posts = page.posts.toArray().sort(function(a,b){ return b.date - a.date; });
+    var currentYear = null;
+    var currentMonth = null;
+  %>
+
+  <% posts.forEach(function(post) { %>
+    <% var y = post.date.year(); var m = post.date.format('MM'); %>
+
+    <% if (y !== currentYear) { %>
+      <% if (currentYear !== null) { %></ul></div><% } %>
+      <% currentYear = y; currentMonth = null; %>
+      <div class="archive-year">
+        <h2 class="archive-year-title"><%= y %></h2>
+    <% } %>
+
+    <% if (m !== currentMonth) { %>
+      <% if (currentMonth !== null) { %></ul><% } %>
+      <% currentMonth = m; %>
+      <h3 class="archive-month-title"><%= post.date.format('MM月') %></h3>
+      <ul class="archive-list">
+    <% } %>
+
+    <li class="archive-item">
+      <time class="archive-date"><%= post.date.format('DD') %></time>
+      <a href="<%- url_for(post.path) %>" class="archive-title"><%= post.title %></a>
+    </li>
+  <% }); %>
+
+  <% if (posts.length > 0) { %></ul></div><% } %>
+</div>

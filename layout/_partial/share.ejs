@@ -1,0 +1,40 @@
+<div class="share-section">
+  <span class="share-label">分享：</span>
+  <div class="share-buttons">
+    <button class="share-btn" id="copyLinkBtn" title="复制链接" aria-label="复制链接">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+      </svg>
+      <span class="share-btn-text">复制链接</span>
+    </button>
+
+    <a class="share-btn"
+       href="https://twitter.com/intent/tweet?text=<%= encodeURIComponent(page.title) %>&url=<%= encodeURIComponent(page.permalink) %>"
+       target="_blank" rel="noopener" title="分享到 Twitter" aria-label="分享到 Twitter">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+      </svg>
+      Twitter
+    </a>
+
+    <a class="share-btn"
+       href="https://service.weibo.com/share/share.php?title=<%= encodeURIComponent(page.title) %>&url=<%= encodeURIComponent(page.permalink) %>"
+       target="_blank" rel="noopener" title="分享到微博" aria-label="分享到微博">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M10.098 20.323c-3.977.391-7.414-1.406-7.672-4.02-.259-2.609 2.759-5.047 6.74-5.441 3.979-.394 7.413 1.404 7.671 4.018.259 2.6-2.759 5.049-6.739 5.443zm5.609-12.353c-.469-.135-.791-.229-.546-.822.533-1.333.588-2.484.01-3.311-.988-1.411-3.693-1.337-6.797.031 0 0-.973.424-.723-.346.476-1.545.404-2.836-.339-3.584-1.698-1.706-6.219.063-10.094 3.958C-1.1 7.229-2 10.189-2 12.768c0 5.082 6.514 8.17 12.89 8.17 8.354 0 13.91-4.853 13.91-8.703 0-2.328-1.967-3.655-3.093-4.265zm1.307-3.01c-.469-.135-.791-.229-.546-.822.533-1.333.588-2.484.01-3.311-.988-1.411-3.693-1.337-6.797.031 0 0-.973.424-.723-.346.476-1.545.404-2.836-.339-3.584"/>
+      </svg>
+      微博
+    </a>
+  </div>
+</div>
+
+<script>
+document.getElementById('copyLinkBtn').addEventListener('click', function() {
+  navigator.clipboard.writeText(window.location.href).then(function() {
+    var btn = document.querySelector('#copyLinkBtn .share-btn-text');
+    btn.textContent = '已复制！';
+    setTimeout(function() { btn.textContent = '复制链接'; }, 2000);
+  });
+});
+</script>

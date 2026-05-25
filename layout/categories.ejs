@@ -1,0 +1,15 @@
+<div class="categories-page">
+  <h1 class="page-heading">分类
+    <span class="page-heading-count"><%= site.categories.length %> 个</span>
+  </h1>
+  <ul class="categories-list">
+    <% site.categories.sort('name').each(function(cat) { %>
+      <li class="category-item">
+        <a href="<%- url_for(cat.path) %>" class="category-link">
+          <span class="category-name"><%= cat.name %></span>
+          <span class="category-count"><%= cat.length %></span>
+        </a>
+      </li>
+    <% }); %>
+  </ul>
+</div>

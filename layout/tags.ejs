@@ -1,0 +1,13 @@
+<div class="tags-page">
+  <h1 class="page-heading">标签
+    <span class="page-heading-count"><%= site.tags.length %> 个</span>
+  </h1>
+  <div class="tags-cloud">
+    <% site.tags.sort('name').each(function(tag) { %>
+      <a href="<%- url_for(tag.path) %>" class="tag-cloud-item" data-count="<%= tag.length %>">
+        #<%= tag.name %>
+        <span class="tag-count"><%= tag.length %></span>
+      </a>
+    <% }); %>
+  </div>
+</div>

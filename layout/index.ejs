@@ -1,0 +1,7 @@
+<div class="post-list">
+  <% page.posts.each(function(post) { %>
+    <%- partial('_partial/post-card', {post: post}) %>
+  <% }); %>
+</div>
+
+<%- partial('_partial/pagination') %>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="<%= config.language || 'zh-CN' %>">
+<head>
+  <%- partial('_partial/head') %>
+</head>
+<body>
+  <%- partial('_partial/header') %>
+  <main class="main-content">
+    <div class="container">
+      <div class="not-found">
+        <div class="not-found-code">404</div>
+        <h1 class="not-found-title">页面不见了</h1>
+        <p class="not-found-desc">您访问的页面可能已被删除、移动或从未存在过。</p>
+        <a href="<%- url_for('/') %>" class="btn btn-primary">返回首页</a>
+      </div>
+    </div>
+  </main>
+  <%- partial('_partial/footer') %>
+  <script src="<%- url_for('/js/main.js') %>"></script>
+</body>
+</html>

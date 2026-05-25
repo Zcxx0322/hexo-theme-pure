@@ -1,0 +1,97 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<%
+  var pageTitle = page.title ? page.title + ' | ' + config.title : config.title;
+  var rawDesc   = page.description || strip_html(page.excerpt || '').trim() || config.description || '';
+  var metaDesc  = rawDesc.replace(/\n/g,' ').substring(0, 160);
+  var pageUrl   = page.permalink || url;
+  var coverImg  = page.cover || config.cover || '';
+%>
+
+<title><%= pageTitle %></title>
+<meta name="description" content="<%= metaDesc %>">
+<% if (config.author) { %><meta name="author" content="<%= config.author %>"><% } %>
+<% if (page.tags && page.tags.length) { %>
+  <meta name="keywords" content="<%= page.tags.map(function(t){return t.name}).join(', ') %>">
+<% } else if (config.keywords) { %>
+  <meta name="keywords" content="<%= config.keywords %>">
+<% } %>
+<link rel="canonical" href="<%= pageUrl %>">
+
+<!-- Open Graph -->
+<meta property="og:type"        content="<%= page.layout === 'post' ? 'article' : 'website' %>">
+<meta property="og:title"       content="<%= page.title || config.title %>">
+<meta property="og:description" content="<%= metaDesc %>">
+<meta property="og:url"         content="<%= pageUrl %>">
+<meta property="og:site_name"   content="<%= config.title %>">
+<% if (coverImg) { %><meta property="og:image" content="<%= coverImg %>"><% } %>
+<% if (page.layout === 'post') { %>
+  <meta property="article:published_time" content="<%= page.date.toISOString() %>">
+  <meta property="article:author"         content="<%= config.author %>">
+  <% if (page.tags) { page.tags.each(function(tag) { %>
+    <meta property="article:tag" content="<%= tag.name %>">
+  <% }); } %>
+<% } %>
+
+<!-- Twitter Card -->
+<meta name="twitter:card"        content="summary_large_image">
+<meta name="twitter:title"       content="<%= page.title || config.title %>">
+<meta name="twitter:description" content="<%= metaDesc %>">
+<% if (coverImg) { %><meta name="twitter:image" content="<%= coverImg %>"><% } %>
+
+<!-- JSON-LD -->
+<% if (page.layout === 'post') { %>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "<%= page.title.replace(/"/g,'&quot;') %>",
+  "datePublished": "<%= page.date.toISOString() %>",
+  "dateModified": "<%= (page.updated || page.date).toISOString() %>",
+  "author": {"@type":"Person","name":"<%= config.author %>"},
+  "publisher": {"@type":"Organization","name":"<%= config.title %>"},
+  "description": "<%= metaDesc.replace(/"/g,'&quot;') %>"<% if (coverImg) { %>,
+  "image": "<%= coverImg %>"<% } %>
+}
+</script>
+<% } %>
+
+<!-- Favicon -->
+<link rel="icon" href="<%- url_for(theme.favicon || '/favicon.ico') %>">
+<link rel="apple-touch-icon" href="<%- url_for(theme.favicon || '/favicon.ico') %>">
+<link rel="alternate" type="application/rss+xml" title="<%= config.title %>" href="<%- url_for('/atom.xml') %>">
+
+<!-- Main stylesheet -->
+<link rel="stylesheet" href="<%- url_for('/css/main.css') %>">
+
+<!-- Code highlight styles are bundled in main.css (Hexo native highlight.js output) -->
+
+<!-- KaTeX -->
+<% if (theme.math && theme.math.enable && theme.math.engine === 'katex') { %>
+  <% var katexCss = (theme.cdn && theme.cdn.katex_css) || 'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css'; %>
+  <% var katexJs  = (theme.cdn && theme.cdn.katex_js)  || 'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js'; %>
+  <link rel="stylesheet" href="<%= katexCss %>">
+  <script defer src="<%= katexJs %>"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false},{left:'\\\\(',right:'\\\\)',display:false},{left:'\\\\[',right:'\\\\]',display:true}]})">
+  </script>
+<% } %>
+
+<!-- MathJax -->
+<% if (theme.math && theme.math.enable && theme.math.engine === 'mathjax') { %>
+  <script>MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]},svg:{fontCache:'global'}};</script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<% } %>
+
+<!-- Dark-mode init (prevents flash) -->
+<script>
+(function(){
+  var s = localStorage.getItem('pure-theme');
+  var d = '<%= (theme.dark_mode && theme.dark_mode.default) || "auto" %>';
+  var dark = s === 'dark' || (!s && d === 'dark') ||
+             (!s && d === 'auto' && window.matchMedia('(prefers-color-scheme:dark)').matches);
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+})();
+</script>

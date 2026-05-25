@@ -1,0 +1,20 @@
+<div class="post-item">
+  <h2 class="post-item-title">
+    <a href="<%- url_for(post.path) %>"><%= post.title %></a>
+  </h2>
+  <div class="post-item-meta">
+    <time datetime="<%= post.date.toISOString() %>"><%= post.date.format('YYYY-MM-DD') %></time>
+    <% if (post.categories && post.categories.length) { %>
+      <span class="meta-sep">·</span>
+      <% post.categories.each(function(cat) { %>
+        <a href="<%- url_for(cat.path) %>" class="meta-category"><%= cat.name %></a>
+      <% }); %>
+    <% } %>
+    <% if (post.tags && post.tags.length) { %>
+      <span class="meta-sep">·</span>
+      <% post.tags.each(function(tag) { %>
+        <a href="<%- url_for(tag.path) %>" class="tag">#<%= tag.name %></a>
+      <% }); %>
+    <% } %>
+  </div>
+</div>

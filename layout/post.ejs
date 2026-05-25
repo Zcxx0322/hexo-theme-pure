@@ -1,0 +1,77 @@
+<div class="post-layout">
+  <% if (theme.toc && theme.toc.enable) { %>
+    <%- partial('_partial/toc') %>
+  <% } %>
+
+  <article class="post-article" itemscope itemtype="https://schema.org/BlogPosting">
+    <header class="post-header">
+      <h1 class="post-title" itemprop="headline"><%= page.title %></h1>
+      <div class="post-meta">
+        <time datetime="<%= page.date.toISOString() %>" itemprop="datePublished">
+          <%= page.date.format('YYYY-MM-DD') %>
+        </time>
+        <% if (theme.post && theme.post.show_updated && page.updated && page.updated.valueOf() !== page.date.valueOf()) { %>
+          <span class="meta-sep">·</span>
+          <span>更新于 <%= page.updated.format('YYYY-MM-DD') %></span>
+        <% } %>
+        <% if (page.categories && page.categories.length) { %>
+          <span class="meta-sep">·</span>
+          <% page.categories.each(function(cat) { %>
+            <a href="<%- url_for(cat.path) %>" class="meta-category"><%= cat.name %></a>
+          <% }); %>
+        <% } %>
+        <% if (page.reading_time) { %>
+          <span class="meta-sep">·</span>
+          <span><%= page.reading_time %> 分钟阅读</span>
+        <% } %>
+      </div>
+      <% if (page.cover) { %>
+        <div class="post-cover">
+          <img src="<%= page.cover %>" alt="<%= page.title %>" loading="lazy">
+        </div>
+      <% } %>
+    </header>
+
+    <div class="post-content" itemprop="articleBody">
+      <%- page.content %>
+    </div>
+
+    <footer class="post-footer">
+      <% if (page.tags && page.tags.length) { %>
+        <div class="post-tags">
+          <% page.tags.each(function(tag) { %>
+            <a href="<%- url_for(tag.path) %>" class="tag">#<%= tag.name %></a>
+          <% }); %>
+        </div>
+      <% } %>
+
+      <%- partial('_partial/share') %>
+
+      <% if (theme.post && theme.post.copyright) { %>
+        <div class="post-copyright">
+          <p><strong>本文标题：</strong><%= page.title %></p>
+          <p><strong>本文链接：</strong><a href="<%= page.permalink %>"><%= page.permalink %></a></p>
+          <p><strong>版权声明：</strong><%= (theme.post && theme.post.copyright_text) || '本文采用 CC BY-NC-SA 4.0 许可协议，转载请注明出处。' %></p>
+        </div>
+      <% } %>
+    </footer>
+
+    <!-- Prev / Next navigation -->
+    <nav class="post-nav">
+      <% if (page.prev) { %>
+        <a href="<%- url_for(page.prev.path) %>" class="post-nav-item post-nav-prev">
+          <span class="post-nav-label">← 上一篇</span>
+          <span class="post-nav-title"><%= page.prev.title %></span>
+        </a>
+      <% } %>
+      <% if (page.next) { %>
+        <a href="<%- url_for(page.next.path) %>" class="post-nav-item post-nav-next">
+          <span class="post-nav-label">下一篇 →</span>
+          <span class="post-nav-title"><%= page.next.title %></span>
+        </a>
+      <% } %>
+    </nav>
+
+    <%- partial('_partial/comments') %>
+  </article>
+</div>
