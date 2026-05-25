@@ -27,7 +27,7 @@
 
 ```bash
 cd your-hexo-blog
-git clone https://github.com/your-name/hexo-theme-pure themes/pure
+git clone https://github.com/Zcxx0322/hexo-theme-pure.git themes/pure
 ```
 
 在博客根目录的 `_config.yml` 中设置：
