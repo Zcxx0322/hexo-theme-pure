@@ -1,0 +1,40 @@
+<%
+  var series = pure_series(page);
+%>
+<% if (series) { %>
+  <section class="post-series" aria-labelledby="post-series-title">
+    <div class="post-series-header">
+      <div>
+        <span class="post-series-kicker">系列文章</span>
+        <h2 id="post-series-title" class="post-series-title"><%= series.name %></h2>
+      </div>
+      <span class="post-series-count">第 <%= series.index + 1 %> 篇 / 共 <%= series.total %> 篇</span>
+    </div>
+
+    <ol class="post-series-list">
+      <% series.posts.forEach(function(item, index) { %>
+        <li class="post-series-item<%= item.path === page.path ? ' active' : '' %>">
+          <a href="<%- url_for(item.path) %>">
+            <span class="post-series-index"><%= index + 1 %></span>
+            <span class="post-series-link-title"><%= item.title %></span>
+          </a>
+        </li>
+      <% }); %>
+    </ol>
+
+    <div class="post-series-nav">
+      <% if (series.prev) { %>
+        <a href="<%- url_for(series.prev.path) %>" class="post-series-nav-item">
+          <span>上一篇</span>
+          <strong><%= series.prev.title %></strong>
+        </a>
+      <% } %>
+      <% if (series.next) { %>
+        <a href="<%- url_for(series.next.path) %>" class="post-series-nav-item post-series-nav-next">
+          <span>下一篇</span>
+          <strong><%= series.next.title %></strong>
+        </a>
+      <% } %>
+    </div>
+  </section>
+<% } %>

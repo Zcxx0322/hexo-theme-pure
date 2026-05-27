@@ -6,7 +6,7 @@
 favicon: /favicon.ico
 
 # Logo 图片路径；留空则显示站点标题文字
-logo:
+logo: /img/zcxx0322.png
 
 # ----------------------------------------------------------------
 # 导航菜单（名称: 路径）
@@ -22,19 +22,26 @@ menu:
 # 社交链接（显示在页脚；留空则隐藏）
 # ----------------------------------------------------------------
 social:
-  github:
+  github: https://github.com/Zcxx0322
   twitter:
-  email:
-  rss: /atom.xml
+  email: 
+  rss: 
 
 # ----------------------------------------------------------------
 # 文章设置
 # ----------------------------------------------------------------
 post:
   excerpt_length: 200        # 无 <!-- more --> 时自动截取的摘要长度（字符数）
-  show_updated: false        # 是否在文章底部显示"最后更新"时间
+  show_updated: true        # 是否在文章底部显示"最后更新"时间
   copyright: true            # 是否在文章底部显示版权声明
   copyright_text: "转载请注明出处。"
+  series:
+    enable: true             # 是否启用文章系列导航
+  outdated:
+    enable: true             # 是否启用文章时效提醒
+    days: 365                # 发布时间超过多少天后提醒
+    basis: date              # date（发布时间）| updated（更新时间）
+    message: "技术细节可能随版本变化，请结合当前环境验证。"
 
 # ----------------------------------------------------------------
 # 文章目录（TOC）
@@ -78,15 +85,15 @@ search:
 # 评论系统（将 enable 设为 true 并选择一个 provider）
 # ----------------------------------------------------------------
 comments:
-  enable: false
+  enable: true
   provider: giscus           # giscus | waline | disqus | valine
 
   # Giscus（基于 GitHub Discussions），前往 https://giscus.app 获取参数
   giscus:
-    repo: ""
-    repo_id: ""
-    category: ""
-    category_id: ""
+    repo: "Zcxx0322/Zcxx0322.github.io"
+    repo_id: "R_kgDOQev4PQ"
+    category: "Announcements"
+    category_id: "DIC_kwDOQev4Pc4C97e7"
     mapping: pathname
     reactions_enabled: 1
     emit_metadata: 0
@@ -146,12 +153,12 @@ footer:
 # 关于页（layout: about）
 # ----------------------------------------------------------------
 about:
-  avatar:   # 头像图片路径，如 /images/avatar.jpg
-  name: ""           # 显示名称，留空则使用站点 author
+  avatar: /img/zcxx0322.png  # 头像图片路径，如 /images/avatar.jpg
+  name: "Zcxx0322"           # 显示名称，留空则使用站点 author
   bio: ""                    # 个人简介
   links:                     # 联系方式链接（留空则隐藏对应按钮）
-    github: ""  # GitHub 主页地址
-    email: ""                # 邮箱地址（不含 mailto:）
+    github: "https://github.com/Zcxx0322"  # GitHub 主页地址
+    email: "3611744356@qq.com"                # 邮箱地址（不含 mailto:）
     twitter: ""              # Twitter / X 主页地址
     website: ""              # 个人网站地址
 

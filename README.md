@@ -10,6 +10,9 @@
 - 响应式，适配手机、平板、桌面
 - 文章目录（TOC）自动生成，滚动高亮
 - 代码高亮（Hexo 内置 highlight.js）+ 一键复制，宽代码块自动横向滚动
+- 技术提示块：note / tip / warning / danger 等
+- 文章系列导航，适合连续教程和知识库
+- 文章时效提醒，旧技术文档自动提示读者核对版本
 - 数学公式（KaTeX / MathJax）
 - 图片懒加载 + 点击放大（Lightbox）
 - 本地搜索（`Ctrl/⌘ + K` 唤起）
@@ -95,6 +98,48 @@ highlight:
 ```
 
 可用主题名参考：https://highlightjs.org/demo
+
+### 文章增强
+
+```yaml
+post:
+  series:
+    enable: true
+  outdated:
+    enable: true
+    days: 365
+    basis: date      # date | updated
+```
+
+文章系列在文章 front-matter 中配置：
+
+```yaml
+---
+title: Kubernetes 安装配置
+series: Kubernetes 实战
+series_order: 1
+---
+```
+
+同一个 `series` 名称的文章会自动组成系列，并按 `series_order` 排序。
+
+文章提示块写法：
+
+```markdown
+:::tip
+建议先备份配置文件。
+:::
+
+:::warning 生产环境注意
+执行前请确认防火墙和 SELinux 策略。
+:::
+
+:::danger
+这个操作会删除数据，请谨慎执行。
+:::
+```
+
+支持类型：`note`、`tip`、`info`、`success`、`warning`、`danger`。
 
 ### 数学公式
 
@@ -231,6 +276,9 @@ tags:
   - 标签2
 categories:
   - 分类名
+series: 系列名称           # 可选，同名文章会自动组成系列
+series_order: 1            # 可选，系列内排序
+outdated: false            # 可选，关闭单篇文章的时效提醒
 cover: /images/cover.jpg  # 可选，封面图
 description: 文章摘要      # 可选，用于 SEO
 ---

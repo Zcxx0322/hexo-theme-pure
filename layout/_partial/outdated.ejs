@@ -1,0 +1,11 @@
+<%
+  var outdated = pure_outdated(page);
+%>
+<% if (outdated) { %>
+  <div class="post-outdated" role="note">
+    <strong>内容时效提醒</strong>
+    <p>
+      本文<%= outdated.basis === 'updated' ? '最后更新' : '发布' %>于 <%= outdated.date.format('YYYY-MM-DD') %>，距今已约 <%= outdated.days %> 天。<%= outdated.message || '技术细节可能随版本变化，请结合当前环境验证。' %>
+    </p>
+  </div>
+<% } %>

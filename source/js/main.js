@@ -56,12 +56,31 @@
   /* ── Copy code button ───────────────────────────────────────── */
   // Hexo generates: figure.highlight > table > tr > td.code > pre
   document.querySelectorAll('figure.highlight').forEach(function (fig) {
+    var toolbar = document.createElement('div');
+    toolbar.className = 'code-toolbar';
+
+    var wrapBtn = document.createElement('button');
+    wrapBtn.className = 'code-wrap-btn';
+    wrapBtn.type = 'button';
+    wrapBtn.textContent = '换行';
+    wrapBtn.setAttribute('aria-label', '切换代码自动换行');
+
     var btn = document.createElement('button');
     btn.className = 'code-copy-btn';
+    btn.type = 'button';
     btn.textContent = '复制';
     btn.setAttribute('aria-label', '复制代码');
     fig.style.position = 'relative';
-    fig.appendChild(btn);
+
+    toolbar.appendChild(wrapBtn);
+    toolbar.appendChild(btn);
+    fig.appendChild(toolbar);
+
+    wrapBtn.addEventListener('click', function () {
+      var wrapped = fig.classList.toggle('code-wrap');
+      wrapBtn.textContent = wrapped ? '不换行' : '换行';
+    });
+
     btn.addEventListener('click', function () {
       var lines = fig.querySelectorAll('td.code .line');
       var text;

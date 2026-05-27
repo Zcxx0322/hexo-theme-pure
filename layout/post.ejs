@@ -32,9 +32,13 @@
       <% } %>
     </header>
 
+    <%- partial('_partial/outdated') %>
+
     <div class="post-content" itemprop="articleBody">
       <%- page.content %>
     </div>
+
+    <%- partial('_partial/series') %>
 
     <footer class="post-footer">
       <% if (page.tags && page.tags.length) { %>
