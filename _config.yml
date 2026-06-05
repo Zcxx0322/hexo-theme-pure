@@ -6,7 +6,7 @@
 favicon: /favicon.ico
 
 # Logo 图片路径；留空则显示站点标题文字
-logo: /img/zcxx0322.png
+logo: ""                     # 如 /img/logo.png，留空则显示站点标题文字
 
 # ----------------------------------------------------------------
 # 导航菜单（名称: 路径）
@@ -22,10 +22,10 @@ menu:
 # 社交链接（显示在页脚；留空则隐藏）
 # ----------------------------------------------------------------
 social:
-  github: https://github.com/Zcxx0322
-  twitter:
-  email: 
-  rss: 
+  github: ""
+  twitter: ""
+  email: ""
+  rss: ""
 
 # ----------------------------------------------------------------
 # 文章设置
@@ -90,10 +90,10 @@ comments:
 
   # Giscus（基于 GitHub Discussions），前往 https://giscus.app 获取参数
   giscus:
-    repo: "Zcxx0322/Zcxx0322.github.io"
-    repo_id: "R_kgDOQev4PQ"
-    category: "Announcements"
-    category_id: "DIC_kwDOQev4Pc4C97e7"
+    repo: ""
+    repo_id: ""
+    category: ""
+    category_id: ""
     mapping: pathname
     reactions_enabled: 1
     emit_metadata: 0
@@ -154,14 +154,14 @@ footer:
 # 关于页（layout: about）
 # ----------------------------------------------------------------
 about:
-  avatar: /img/zcxx0322.png  # 头像图片路径，如 /images/avatar.jpg
-  name: "Zcxx0322"           # 显示名称，留空则使用站点 author
-  bio: ""                    # 个人简介
-  links:                     # 联系方式链接（留空则隐藏对应按钮）
-    github: "https://github.com/Zcxx0322"  # GitHub 主页地址
-    email: "3611744356@qq.com"                # 邮箱地址（不含 mailto:）
-    twitter: ""              # Twitter / X 主页地址
-    website: ""              # 个人网站地址
+  avatar: ""                  # 头像图片路径，如 /images/avatar.jpg
+  name: ""                    # 显示名称，留空则使用站点 author
+  bio: ""                     # 个人简介
+  links:                      # 联系方式链接（留空则隐藏对应按钮）
+    github: ""                # GitHub 主页地址
+    email: ""                 # 邮箱地址（不含 mailto:）
+    twitter: ""               # Twitter / X 主页地址
+    website: ""               # 个人网站地址
 
 # ----------------------------------------------------------------
 # CDN 覆盖（留空则使用内置默认值）
