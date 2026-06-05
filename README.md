@@ -21,6 +21,7 @@
 - 站点统计：Google Analytics / 百度统计 / Umami
 - 归档页（按年/月分组）、标签云、分类列表
 - 文章版权声明、社交分享
+- 全站最后更新时间（页脚显示）
 - Open Graph / Twitter Card / JSON-LD SEO
 - 友好 404 页面
 
@@ -38,6 +39,22 @@ git clone https://github.com/Zcxx0322/hexo-theme-pure.git themes/pure
 ```yaml
 theme: pure
 ```
+
+### 配置主题
+
+**推荐方式：**将主题默认配置复制为 `_config.pure.yml` 放在博客根目录，然后按需修改：
+
+```bash
+cp themes/pure/_config.yml _config.pure.yml
+```
+
+Hexo 会自动将 `_config.pure.yml` 中的内容合并到主题默认配置之上。这样做的好处：
+
+- 主题 `_config.yml` 保持干净，不含个人信息，可以安全开源
+- 你的个人配置集中在 `_config.pure.yml` 中，更新主题时不会被覆盖
+- 一份文件即可看到所有可配置项，方便随时调整
+
+> 如果直接修改 `themes/pure/_config.yml`，更新主题时配置会被覆盖。
 
 ---
 
@@ -67,7 +84,7 @@ feed:
 
 ## 主题配置
 
-编辑 `themes/pure/_config.yml`，所有选项均有中文注释说明。
+编辑博客根目录下的 `_config.pure.yml`，所有选项均有中文注释说明。
 
 ### 导航菜单
 
@@ -157,6 +174,18 @@ marked:
   headerIds: false
 ```
 
+### 页脚
+
+```yaml
+footer:
+  since: 2024              # 建站年份，显示为 © 2024 – 2026
+  last_updated: true       # 是否显示全站最后更新时间
+  custom_text: ""          # 自定义页脚内容（支持 HTML）
+  icp: ""                  # ICP 备案号
+```
+
+`last_updated` 开启后会自动遍历所有文章和页面，取最新的 `updated`/`date` 时间显示在页脚。
+
 ### 关于页
 
 ```yaml
@@ -218,7 +247,7 @@ layout: about
 这里可以写正文内容（Markdown），会显示在联系链接下方。
 ```
 
-头像、简介和联系链接在主题配置 `_config.yml` 的 `about` 节中统一配置。
+头像、简介和联系链接在 `_config.pure.yml` 的 `about` 节中统一配置。
 
 ### 标签页
 
@@ -292,7 +321,9 @@ description: 文章摘要      # 可选，用于 SEO
 
 ```
 themes/pure/
-├── _config.yml          # 主题配置（中文注释）
+├── _config.yml          # 主题默认配置（中文注释）
+├── scripts/
+│   └── features.js      # 辅助脚本（admonition、系列、时效提醒等）
 ├── layout/
 │   ├── layout.ejs       # 基础布局
 │   ├── index.ejs        # 首页
