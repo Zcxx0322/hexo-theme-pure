@@ -143,6 +143,29 @@ hexo.extend.helper.register('pure_series', function pureSeries(page) {
   };
 });
 
+hexo.extend.helper.register('pure_last_updated', function pureLastUpdated() {
+  var posts = hexo.locals.get('posts');
+  var pages = hexo.locals.get('pages');
+  var latest = null;
+
+  function check(data) {
+    if (!data || !data.length) return;
+    data.each(function (item) {
+      var d = item.updated || item.date;
+      if (d && d.valueOf) {
+        if (!latest || d.valueOf() > latest.valueOf()) {
+          latest = d;
+        }
+      }
+    });
+  }
+
+  check(posts);
+  check(pages);
+
+  return latest;
+});
+
 hexo.extend.helper.register('pure_outdated', function pureOutdated(page) {
   var config = (((hexo.theme || {}).config || {}).post || {}).outdated || {};
   if (config.enable === false || !page || page.layout !== 'post') return null;

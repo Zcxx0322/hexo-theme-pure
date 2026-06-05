@@ -43,6 +43,15 @@
       <% } %>
     </div>
 
+    <% if (theme.footer && theme.footer.last_updated !== false) { %>
+      <% var latest = pure_last_updated(); %>
+      <% if (latest) { %>
+      <div class="footer-last-updated">
+        <span>最后更新于 <%= latest.format('YYYY-MM-DD HH:mm') %></span>
+      </div>
+      <% } %>
+    <% } %>
+
     <% if (theme.footer && theme.footer.custom_text) { %>
       <div class="footer-custom"><%- theme.footer.custom_text %></div>
     <% } %>
