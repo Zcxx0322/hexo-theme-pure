@@ -1484,11 +1484,13 @@ figure.highlight td.gutter pre {
   border: none;
   box-shadow: none;
   border-radius: 0;
+  overflow: visible;
 }
 figure.highlight .gutter .line {
   color: #666;
   font-family: var(--font-mono);
   font-size: .85em;
+  line-height: calc(1.6 / 0.85);
   font-weight: 400;
 }
 
@@ -1507,7 +1509,6 @@ figure.highlight td.code pre {
   overflow: visible;
 }
 figure.highlight .code .line {
-  display: block;
   color: #ccc;
   font-family: var(--font-mono);
   font-weight: 400;
