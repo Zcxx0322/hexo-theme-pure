@@ -39,8 +39,8 @@ post:
     enable: true             # 是否启用文章系列导航
   outdated:
     enable: true             # 是否启用文章时效提醒
-    days: 365                # 发布时间超过多少天后提醒
-    basis: date              # date（发布时间）| updated（更新时间）
+    days: 365                # 最后更新超过多少天后提醒
+    basis: updated           # date（发布时间）| updated（更新时间）
     message: "技术细节可能随版本变化，请结合当前环境验证。"
 
 # ----------------------------------------------------------------

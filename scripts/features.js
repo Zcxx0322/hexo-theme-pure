@@ -172,8 +172,8 @@ hexo.extend.helper.register('pure_outdated', function pureOutdated(page) {
   if (page.outdated === false) return null;
 
   var threshold = Number(page.outdated_days || config.days || 365);
-  var basis = config.basis === 'updated' ? 'updated' : 'date';
-  var date = basis === 'updated' ? (page.updated || page.date) : page.date;
+  var basis = config.basis === 'date' ? 'date' : 'updated';
+  var date = basis === 'date' ? page.date : (page.updated || page.date);
   if (!date || !date.valueOf) return null;
 
   var days = Math.floor((Date.now() - date.valueOf()) / 86400000);
