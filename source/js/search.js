@@ -12,10 +12,13 @@
 
   var searchInput   = document.getElementById('searchInput');
   var searchResults = document.getElementById('searchResults');
+  var searchOverlay = document.getElementById('searchOverlay');
   if (!searchInput || !searchResults) return;
 
-  var searchData = null;
-  var loading    = false;
+  var searchPath  = (searchOverlay && searchOverlay.dataset.searchPath) || '/search.xml';
+  var searchData  = null;
+  var loading     = false;
+  var controller  = null;  // AbortController for cancelling stale requests
 
   function escHtml(s) {
     return String(s)
@@ -43,43 +46,46 @@
     loading = true;
     searchResults.innerHTML = '<p class="search-hint">加载搜索数据…</p>';
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', '/search.xml', true);
-    xhr.timeout = 10000;
-    xhr.onload = function () {
-      loading = false;
-      if (xhr.status !== 200) {
-        cb('HTTP ' + xhr.status);
-        return;
-      }
-      try {
-        var parser  = new DOMParser();
-        var xmlDoc  = parser.parseFromString(xhr.responseText, 'text/xml');
-        var parseErr = xmlDoc.querySelector('parsererror');
-        if (parseErr) { cb('XML parse error'); return; }
+    // Cancel any in-flight request
+    if (controller) controller.abort();
+    controller = new AbortController();
 
-        var entries = xmlDoc.querySelectorAll('entry');
-        searchData  = [];
-        entries.forEach(function (entry) {
-          var titleEl   = entry.querySelector('title');
-          var urlEl     = entry.querySelector('url');
-          var contentEl = entry.querySelector('content');
-          searchData.push({
-            title:   titleEl   ? (titleEl.textContent   || '') : '',
-            url:     urlEl     ? (urlEl.textContent     || '') : '',
-            content: contentEl ? (contentEl.textContent || '') : '',
+    fetch(searchPath, { signal: controller.signal })
+      .then(function (res) {
+        loading = false;
+        if (!res.ok) { cb('HTTP ' + res.status); return; }
+        return res.text();
+      })
+      .then(function (text) {
+        if (text === undefined) return; // errored already
+        try {
+          var parser  = new DOMParser();
+          var xmlDoc  = parser.parseFromString(text, 'text/xml');
+          var parseErr = xmlDoc.querySelector('parsererror');
+          if (parseErr) { cb('XML parse error'); return; }
+
+          var entries = xmlDoc.querySelectorAll('entry');
+          searchData  = [];
+          entries.forEach(function (entry) {
+            var titleEl   = entry.querySelector('title');
+            var urlEl     = entry.querySelector('url');
+            var contentEl = entry.querySelector('content');
+            searchData.push({
+              title:   titleEl   ? (titleEl.textContent   || '') : '',
+              url:     urlEl     ? (urlEl.textContent     || '') : '',
+              content: contentEl ? (contentEl.textContent || '') : '',
+            });
           });
-        });
-        cb(null, searchData);
-      } catch (e) {
-        cb(String(e));
-      }
-    };
-    xhr.onerror = xhr.ontimeout = function () {
-      loading = false;
-      cb('网络错误或超时');
-    };
-    xhr.send();
+          cb(null, searchData);
+        } catch (e) {
+          cb(String(e));
+        }
+      })
+      .catch(function (err) {
+        if (err.name === 'AbortError') return; // intentionally cancelled
+        loading = false;
+        cb('网络错误或超时');
+      });
   }
 
   function doSearch(query) {
@@ -124,7 +130,7 @@
 
       if (results.length === 0) {
         searchResults.innerHTML =
-          '<p class="search-no-result">没有找到与 "' + escHtml(query) + '" 相关的文章</p>';
+          '<p class="search-no-result">没有找到与 &quot;' + escHtml(query) + '&quot; 相关的文章</p>';
         return;
       }
 

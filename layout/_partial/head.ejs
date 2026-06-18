@@ -2,6 +2,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
+<!-- Preconnect to CDN origins -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
 <%
   var pageTitle = page.title ? page.title + ' | ' + config.title : config.title;
   var rawDesc   = page.description || strip_html(page.excerpt || '').trim() || config.description || '';
@@ -72,9 +76,11 @@
 <% if (theme.math && theme.math.enable && theme.math.engine === 'katex') { %>
   <% var katexCss = (theme.cdn && theme.cdn.katex_css) || 'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css'; %>
   <% var katexJs  = (theme.cdn && theme.cdn.katex_js)  || 'https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js'; %>
-  <link rel="stylesheet" href="<%= katexCss %>">
-  <script defer src="<%= katexJs %>"></script>
+  <link rel="stylesheet" href="<%= katexCss %>" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+  <script defer src="<%= katexJs %>" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05"
+    crossorigin="anonymous"
     onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false},{left:'\\\\(',right:'\\\\)',display:false},{left:'\\\\[',right:'\\\\]',display:true}]})">
   </script>
 <% } %>
@@ -82,7 +88,7 @@
 <!-- MathJax -->
 <% if (theme.math && theme.math.enable && theme.math.engine === 'mathjax') { %>
   <script>MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]},svg:{fontCache:'global'}};</script>
-  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" integrity="sha384-KKWa9jJ1MZvssLeOoXG6FiOAZfAgmzsIIfw8BXwI9+kYm0lPCbC6yTQPBC00F1/L" crossorigin="anonymous"></script>
 <% } %>
 
 <!-- Dark-mode init (prevents flash) -->

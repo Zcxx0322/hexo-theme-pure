@@ -159,18 +159,47 @@
       var wrap = document.getElementById('tocWrap');
       if (wrap) wrap.style.display = 'none';
     } else {
-      var ol = document.createElement('ol');
+      // Find the minimum heading level as the root level
+      var minLevel = 6;
+      headings.forEach(function (h) {
+        var lv = parseInt(h.tagName.substring(1), 10);
+        if (lv < minLevel) minLevel = lv;
+      });
+
+      // Build nested <ol> — rootOl holds top-level headings directly
+      var rootOl = document.createElement('ol');
+      var stack = [{ ol: rootOl, level: minLevel }];
+
       headings.forEach(function (h, i) {
         if (!h.id) h.id = 'heading-' + i;
+        var level = parseInt(h.tagName.substring(1), 10);
+
+        // Pop up if heading is shallower than current stack top
+        while (stack.length > 1 && level < stack[stack.length - 1].level) {
+          stack.pop();
+        }
+
+        // If deeper than current top, nest a new <ol> inside the last <li>
+        if (level > stack[stack.length - 1].level) {
+          var newOl = document.createElement('ol');
+          var parentLi = stack[stack.length - 1].ol.lastChild;
+          if (parentLi) {
+            parentLi.appendChild(newOl);
+          }
+          stack.push({ ol: newOl, level: level });
+        }
+
+        // Create the <li> with link
         var li = document.createElement('li');
         var a  = document.createElement('a');
         a.href = '#' + h.id;
         a.textContent = h.textContent;
         a.dataset.id = h.id;
         li.appendChild(a);
-        ol.appendChild(li);
+        stack[stack.length - 1].ol.appendChild(li);
       });
-      tocNav.appendChild(ol);
+
+      tocNav.appendChild(rootOl);
 
       // Scroll spy
       var tocLinks = tocNav.querySelectorAll('a');
@@ -182,7 +211,8 @@
             if (active) active.classList.add('active');
           }
         });
-      }, { rootMargin: '-' + (64 + 16) + 'px 0px -70% 0px' });
+      var headerH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-height'), 10) || 64;
+      }, { rootMargin: '-' + (headerH + 16) + 'px 0px -70% 0px' });
 
       headings.forEach(function (h) { observer.observe(h); });
     }
@@ -203,6 +233,26 @@
   var searchClose   = document.getElementById('searchClose');
   var searchInput   = document.getElementById('searchInput');
 
+  function getFocusable(el) {
+    return el.querySelectorAll(
+      'input, button, [href], select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+  }
+
+  function trapFocus(e) {
+    if (!searchOverlay || !searchOverlay.classList.contains('open')) return;
+    if (e.key !== 'Tab') return;
+    var focusable = getFocusable(searchOverlay);
+    if (!focusable.length) return;
+    var first = focusable[0];
+    var last  = focusable[focusable.length - 1];
+    if (e.shiftKey) {
+      if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+    } else {
+      if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  }
+
   function openSearch() {
     if (!searchOverlay) return;
     searchOverlay.classList.add('open');
@@ -213,6 +263,7 @@
     if (!searchOverlay) return;
     searchOverlay.classList.remove('open');
     document.body.style.overflow = '';
+    if (searchBtn) searchBtn.focus();
   }
 
   if (searchBtn)   searchBtn.addEventListener('click', openSearch);
@@ -221,6 +272,7 @@
     searchOverlay.addEventListener('click', function (e) {
       if (e.target === searchOverlay) closeSearch();
     });
+    searchOverlay.addEventListener('keydown', trapFocus);
   }
   document.addEventListener('keydown', function (e) {
     if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
@@ -259,5 +311,19 @@
     syncGiscus(document.documentElement.getAttribute('data-theme'));
   });
   mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+  /* ── Share: copy link ──────────────────────────────────────── */
+  var copyLinkBtn = document.getElementById('copyLinkBtn');
+  if (copyLinkBtn) {
+    copyLinkBtn.addEventListener('click', function () {
+      navigator.clipboard.writeText(window.location.href).then(function () {
+        var label = copyLinkBtn.querySelector('.share-btn-text');
+        if (label) {
+          label.textContent = '已复制！';
+          setTimeout(function () { label.textContent = '复制链接'; }, 2000);
+        }
+      });
+    });
+  }
 
 })();

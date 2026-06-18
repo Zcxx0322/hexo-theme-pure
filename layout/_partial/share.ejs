@@ -28,13 +28,3 @@
     </a>
   </div>
 </div>
-
-<script>
-document.getElementById('copyLinkBtn').addEventListener('click', function() {
-  navigator.clipboard.writeText(window.location.href).then(function() {
-    var btn = document.querySelector('#copyLinkBtn .share-btn-text');
-    btn.textContent = '已复制！';
-    setTimeout(function() { btn.textContent = '复制链接'; }, 2000);
-  });
-});
-</script>
